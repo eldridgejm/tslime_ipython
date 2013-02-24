@@ -8,7 +8,7 @@ import vim
 import re
 from string import ascii_letters
 
-def slime_cell():
+def slime_cell(move_to_next=True):
 	# get the current cursor position
 	(cur_row, cur_col) = vim.current.window.cursor
 
@@ -20,7 +20,7 @@ def slime_cell():
 			locations.append(location_of_mark[0])
 
 	# make dummy "marks" at the beginning and end of the file
-	locations = sorted(set([0] + locations))
+	locations = sorted(set([1] + locations))
 
 	# find which cell we are in. The line that the cursor is on should always be included in the cell.
 	cell_start = [mark for mark in locations if mark <= cur_row][-1]	
