@@ -34,7 +34,7 @@ b 6: # examine the result
 </pre>
 
 If my cursor is on lines 1 or 2, and I invoke tslime_ipython, lines 1 and 2 will be sent.
-If my cursor is on line 3,4, or 5, then lines 3, 4, and 5 will be sent. Note that line 6 will be exluded, as 
+If my cursor is on line 3,4, or 5, then lines 3, 4, and 5 will be sent. Note that line 6 will be excluded, as 
 it is part of the next cell.
 If my cursor is on line 6 or after, then all lines from the sixth onward will be sent.
 Note that if I have a file with no marks, invoking the command will send the entire file.
