@@ -39,6 +39,10 @@ it is part of the next cell.
 If my cursor is on line 6 or after, then all lines from the sixth onward will be sent.
 Note that if I have a file with no marks, invoking the command will send the entire file.
 
+By default, the cursor will be moved to the start of the next cell once the current cell is evaluated.
+To turn off this behavior, change the keymapping from `noremap <C-b> :python slime_cell() <CR>` to 
+`noremap <C-b> :python slime_cell(move_to_Next=False) <CR>`.
+
 Workflow
 --------
 Why is this useful? Suppose you have some code that takes a long time to run, and now you want to write some code to 
