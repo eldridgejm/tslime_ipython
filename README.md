@@ -41,7 +41,7 @@ Note that if I have a file with no marks, invoking the command will send the ent
 
 By default, the cursor will be moved to the start of the next cell once the current cell is evaluated.
 To turn off this behavior, change the keymapping from `noremap <C-b> :python slime_cell() <CR>` to 
-`noremap <C-b> :python slime_cell(move_to_Next=False) <CR>`.
+`noremap <C-b> :python slime_cell(move_to_next=False) <CR>`.
 
 Workflow
 --------
