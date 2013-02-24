@@ -45,6 +45,10 @@ def slime_cell():
 	# send to tmux window
 	vim.command('call Send_to_Tmux("%s")' % cell_as_string)
 
+	# move the cursor to the next cell
+	if candidate_ending_marks:
+		vim.current.window.cursor = (candidate_ending_marks[0], 0)
+
 
 EOF
 
