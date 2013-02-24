@@ -42,8 +42,6 @@ def slime_cell():
 	# format the string for ipython's cpaste functionality
 	cell_as_string = "%cpaste\n" + cell_as_string + "\n--\n"
 	
-	print(cell_start, cell_end)
-
 	# send to tmux window
 	vim.command('call Send_to_Tmux("%s")' % cell_as_string)
 
