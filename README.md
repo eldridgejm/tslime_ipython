@@ -1,25 +1,8 @@
 tslime_ipython
 ==============
 
-A vim plugin to send cells of code from vim to ipython using tslime.
-Cells are defined by delimiting them with vim marks. This attempts to bring some of the benefits of
-the IPython notebook's cells to vim.
-
-Requirements 
-------------
-vim compiled with python support, tslime, and ipython.
-
-Usage
------
-Use vim marks (lower case letters) to delimit blocks of code. Hitting Ctrl-b will select
-all of the code in the current "cell" and send it tslime, which will then enable you to send it
-to ipython. The code is pasted using ipython's "%cpaste" magic function, which nicely formats the incoming text.
-
-A "cell" is the block of code from the previous line with a lowercase mark (including the line that the cursor is on), 
-to the line before the next mark. If there is no previous mark, then the start of the cell is the first line
-of the buffer. If there is no next mark, then the end of the cell is the last line of the buffer.
-
-Here's an example. Say you have the following code with marks a on line 3 and b on line 6.
+A vim plugin to send cells of code from vim to ipython using tslime. This attempts to bring some of the benefits of
+the IPython notebook's cells to vim. For example, if my code looks like the following, with marks on lines 3 and 4:
 
 <pre>
   1: import my_module
@@ -33,15 +16,92 @@ b 6: # examine the result
   9: print(result + x)
 </pre>
 
-If my cursor is on lines 1 or 2, and I invoke tslime_ipython, lines 1 and 2 will be sent.
-If my cursor is on line 3,4, or 5, then lines 3, 4, and 5 will be sent. Note that line 6 will be excluded, as 
-it is part of the next cell.
-If my cursor is on line 6 or after, then all lines from the sixth onward will be sent.
-Note that if I have a file with no marks, invoking the command will send the entire file.
+then I can send everything up to line 3 by hitting <C-b> while my cursor is above line 3. Lines 3 through 5 (inclusive)
+can be sent by positioning my cursor in that cell and hitting <C-b>, and so on. The code is pasted into ipython
+using the `%cpaste` magic function, so everything looks tidy and neat.
 
-By default, the cursor will be moved to the start of the next cell once the current cell is evaluated.
-To turn off this behavior, change the keymapping from `noremap <C-b> :python slime_cell() <CR>` to 
-`noremap <C-b> :python slime_cell(move_to_next=False) <CR>`.
+You can also use comment tags to delimit cells. For instance:
+
+<pre>
+  1: import my_module
+  2:
+  3: ##
+  4: result = my_function(foo, bar, baz)
+  5:
+  6: ##
+  7: print(result)
+  8: x = 5
+  9: print(result + x)
+</pre>
+
+will act the same as the previous example. Here the tags are `##`, though they can be set to whatever you'd like. 
+By default, delimiting cells by tags is turned off. See below on how to configure this behavior.
+
+Requirements 
+------------
+vim compiled with python support, tslime, and ipython.
+
+
+Configuration
+-------------
+By default, tslime_ipython works by treating any lowercase mark as the boundary of a cell. Once a cell is sent,
+the cursor is moved to the start of the next cell if one exists, otherwise the cursor remains in its current
+position.
+
+There are two ways to modify these settings. First, the default setting can be changed by editing the appropriate
+configuration line in tslime_ipython. Second, these settings may be passed as keyword arguments to `slime_cell()`.
+This is powerful, as it enables you to set different keybindings for different tslime_ipython behaviors.
+
+### Using a subset of marks to delimit cells
+By default the entire alphabet is considered when looking for delimiting marks, upper
+and lower cases. For users who would rather use a subset of the alphabet as cell boundaries, this option may
+be set by changing the `DEFAULT_VALID_MARKS` option in tslime_ipython.vim, or by setting `valid_marks` as a keyword
+argument in the keybinding.
+
+Example:
+<pre>
+# change the keybinding so that only marks 'a-f' are used as cell delimiters
+noremap <C-b> :python slime_cell(valid_marks='abcdef') <CR>
+</pre>
+
+### Delimiting cells by vim marks or by comment tags
+Set this option in the plugin file by editing `DEFAULT_DELIMIT_CELL_BY`
+or by setting the keyword argument `delimit_cell_by`. Valid options are `marks` and `tags`.
+
+Tags are comments inserted directly into the python source, used
+to delimit blocks of code. The default tag is `##`, though other tags may be set (see below). When tslime_ipython
+is invoked, lines that entirely match the tag are searched for. This means that if `tag='##'`, then a line containing
+`## this is not a cell` will not be considered as cell delimiters.
+
+Example:
+<pre>
+# use tags instead of marks
+noremap <C-b> :python slime_cell(delimit_cell_by='tags') <CR>
+</pre>
+
+### Changing the definition of a comment tag
+By default, tslime_ipython looks for lines that contain only `##` when searching for tag delimiters. You
+may modify this however you like, though only lines containing `#` as their first characters will be valid
+python code. This setting is `DEFAULT_TAG` in the plugin file, or the `tag` keyword in the keybinding.
+
+Note that if `DEFAULT_DELIMIT_CELL_BY` is set to `marks`, then it is not sufficient to pass only the `tag` keyword
+to delimit by tags. You must also set `delimit_cell_by` to `tags`.
+
+Example:
+<pre>
+# delimit by tags, where a tag is a line containing only '## cell'
+noremap <C-b> :python slime_cell(delimit_cell_by='tags', tag='## cell') <CR>
+</pre>
+
+### Move to the next cell after evaluation
+By default, tslime_ipython takes you to the start of the next cell after you have send the current one.
+If you are in the last cell of a source file, the cursor will stay put, since you are most likely going to
+edit the current cell more.
+
+To change this behavior, set `DEFAULT_MOVE_TO_NEXT` or the keyword argument `move_to_next` to `False`.
+
+### Changing the keybinding
+The keybinding is set at the bottom of `tslime_ipython.vim`. By default it is <C-b>.
 
 Workflow
 --------
