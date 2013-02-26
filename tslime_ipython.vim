@@ -83,8 +83,6 @@ def slime_cell(move_to_next=DEFAULT_MOVE_TO_NEXT, delimit_cell_by=DEFAULT_DELIMI
 	else:
 		raise AssertionError("Invalid method of delimiting a cell was specified.")
 
-	print cell_start, cell_end, next_cell_start
-		
 	# get the contents of the cell
 	cell = vim.current.buffer[cell_start-1:cell_end]
 
