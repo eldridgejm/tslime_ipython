@@ -16,8 +16,8 @@ b 6: # examine the result
   9: print(result + x)
 </pre>
 
-then I can send everything up to line 3 by hitting <C-b> while my cursor is above line 3. Lines 3 through 5 (inclusive)
-can be sent by positioning my cursor in that cell and hitting <C-b>, and so on. The code is pasted into ipython
+then I can send everything up to line 3 by hitting `<C-b>` while my cursor is above line 3. Lines 3 through 5 (inclusive)
+can be sent by positioning my cursor in that cell and hitting `<C-b>`, and so on. The code is pasted into ipython
 using the `%cpaste` magic function, so everything looks tidy and neat.
 
 You can also use comment tags to delimit cells. For instance:
@@ -75,7 +75,7 @@ argument in the keybinding.
 Example:
 <pre>
 # change the keybinding so that only marks 'a-f' are used as cell delimiters
-noremap <C-b> :python slime_cell(valid_marks='abcdef') <CR>
+noremap &lt;C-b&gt; :python slime_cell(valid_marks='abcdef') &lt;CR&gt;
 </pre>
 
 ### Delimiting cells by vim marks or by comment tags
@@ -90,7 +90,7 @@ is invoked, lines that entirely match the tag are searched for. This means that 
 Example:
 <pre>
 # use tags instead of marks
-noremap <C-b> :python slime_cell(delimit_cell_by='tags') <CR>
+noremap &lt;C-b&gt; :python slime_cell(delimit_cell_by='tags') &lt;CR&gt;
 </pre>
 
 ### Changing the definition of a comment tag
@@ -104,7 +104,7 @@ to delimit by tags. You must also set `delimit_cell_by` to `tags`.
 Example:
 <pre>
 # delimit by tags, where a tag is a line containing only '## cell'
-noremap <C-b> :python slime_cell(delimit_cell_by='tags', tag='## cell') <CR>
+noremap &lt;C-b&gt; :python slime_cell(delimit_cell_by='tags', tag='## cell') &lt;CR&gt;
 </pre>
 
 ### Move to the next cell after evaluation
@@ -115,7 +115,7 @@ edit the current cell more.
 To change this behavior, set `DEFAULT_MOVE_TO_NEXT` or the keyword argument `move_to_next` to `False`.
 
 ### Changing the keybinding
-The keybinding is set at the bottom of `tslime_ipython.vim`. By default it is <C-b>.
+The keybinding is set at the bottom of `tslime_ipython.vim`. By default it is `<C-b>`.
 
 Workflow
 --------
