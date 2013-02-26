@@ -1,7 +1,7 @@
 tslime_ipython
 ==============
 
-A vim plugin to send cells of code from vim to ipython using tslime. This attempts to bring some of the benefits of
+tslime_ipython is a vim plugin to send cells of code from vim to ipython using tslime. This attempts to bring some of the benefits of
 the IPython notebook's cells to vim. For example, if my code looks like the following, with marks on lines 3 and 4:
 
 <pre>
@@ -36,6 +36,20 @@ You can also use comment tags to delimit cells. For instance:
 
 will act the same as the previous example. Here the tags are `##`, though they can be set to whatever you'd like. 
 By default, delimiting cells by tags is turned off. See below on how to configure this behavior.
+
+---
+Table of Contents
+---
+
+- [Requirements ](#requirements-)
+- [Configuration](#configuration)
+	- [Using a subset of marks to delimit cells](#using-a-subset-of-marks-to-delimit-cells)
+	- [Delimiting cells by vim marks or by comment tags](#delimiting-cells-by-vim-marks-or-by-comment-tags)
+	- [Changing the definition of a comment tag](#changing-the-definition-of-a-comment-tag)
+	- [Move to the next cell after evaluation](#move-to-the-next-cell-after-evaluation)
+	- [Changing the keybinding](#changing-the-keybinding)
+- [Workflow](#workflow)
+
 
 Requirements 
 ------------
