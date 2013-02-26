@@ -19,6 +19,9 @@ DEFAULT_DELIMIT_CELL_BY = 'marks'
 # Default tag to use if delimiting by tags is set.
 DEFAULT_TAG = '##'
 
+# Whether or not to move to the next cell after sending the current one.
+DEFAULT_MOVE_TO_NEXT = True
+
 # -------------
 
 def get_cell_by_tags(cur_row, tag):
@@ -69,7 +72,7 @@ def get_cell_by_marks(cur_row, valid_marks):
 
 	return cell_start, cell_end, next_cell_start
 
-def slime_cell(move_to_next=True, delimit_cell_by=DEFAULT_DELIMIT_CELL_BY, tag=DEFAULT_TAG, valid_marks=DEFAULT_VALID_MARKS):
+def slime_cell(move_to_next=DEFAULT_MOVE_TO_NEXT, delimit_cell_by=DEFAULT_DELIMIT_CELL_BY, tag=DEFAULT_TAG, valid_marks=DEFAULT_VALID_MARKS):
 	# get the current cursor position
 	(cur_row, cur_col) = vim.current.window.cursor
 
@@ -85,26 +88,26 @@ def slime_cell(move_to_next=True, delimit_cell_by=DEFAULT_DELIMIT_CELL_BY, tag=D
 	# get the contents of the cell
 	cell = vim.current.buffer[cell_start-1:cell_end]
 
-	# join with a newline and escape
-	cell_as_string = escape('\n'.join(cell))
+	"""
+	There is a bug (feature?) is ipython or tslime which only copies 50 lines at a time.
+	We therefore break the cell up into chunks of 25 lines and send these chunks one at a time
+	"""
+	while cell:
+		chunk = cell[:25]
+		cell[:25] = []
 
-	# format the string for ipython's cpaste functionality
-	cell_as_string = "%cpaste\n" + cell_as_string + "\n--\n"
-	
-	# send to tmux window
-	vim.command('call Send_to_Tmux("%s")' % cell_as_string)
+		# join with a newline and escape
+		chunk_as_string = escape('\n'.join(chunk))
+
+		# format the string for ipython's cpaste functionality
+		chunk_as_string = "%cpaste\n" + chunk_as_string + "\n--\n"
+		
+		# send to tmux window
+		vim.command('call Send_to_Tmux("%s")' % chunk_as_string)
 
 	# move the cursor to the next cell
 	if move_to_next:
 		vim.current.window.cursor = (next_cell_start, 0)
-
-"""
-##
-
-print("test")
-
-##
-"""
 
 EOF
 
